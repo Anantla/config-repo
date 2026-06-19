@@ -30,8 +30,8 @@ spring:
 management:
   tracing:
     sampling:
-      probability: 1.0   # 100% tracing (dev ke liye best)
-  
+      probability: 1.0
+
   endpoints:
     web:
       exposure:
@@ -43,3 +43,17 @@ eureka:
       defaultZone: http://localhost:8761/eureka
 
 message: Order Service Running
+
+logging:
+  level:
+    io.github.resilience4j.circuitbreaker: DEBUG
+
+resilience4j:
+  circuitbreaker:
+    instances:
+      paymentService:
+        slidingWindowSize: 5
+        minimumNumberOfCalls: 5
+        failureRateThreshold: 50
+        waitDurationInOpenState: 30s
+        permittedNumberOfCallsInHalfOpenState: 2
